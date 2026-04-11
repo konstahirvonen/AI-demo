@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -34,5 +35,5 @@ async def ask_ai(request: ChatRequest):
 
 #Home page
 @app.get("/")
-async def home():
-    return {"message": "Backend on käynnissä. Käytä /docs testaamiseen http://127.0.0.1:8000/docs"}
+async def get_frontend():
+    return FileResponse("index.html")

@@ -5,6 +5,26 @@
     <title>AI demo</title>
 </head>
 <body>
-<p></p>
+    <input type="text" id="userInput" placeholder="Kysy jotain...">
+    <button onClick="sendToAI()">Lähetä</button>
+    <p id="response"></p>
+
+    <script>
+        async function sendToAI() {
+            const message = document.getElementById("userInput").value;
+            const resField = document.getElementById("response");
+
+            resField.innerText = "Mietitään...";
+            const response = await fetch("/ask", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({message: message})
+            });
+
+            const data = await response.json();
+            resField.innerText = data.answer;
+        }
+    </script>
+
 </body>
 </html>
