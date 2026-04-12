@@ -1,6 +1,7 @@
 import os
 from fastapi import FastAPI
 from fastapi.responses import FileResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from dotenv import load_dotenv
 from openai import OpenAI
@@ -14,6 +15,11 @@ client = OpenAI(
 
 app = FastAPI()
 
+current_dir = os.path.dirname(os.path.abspath(__file__))
+static_path = os.path.join(current_dir, "static")
+
+app.mount("/static", StaticFiles(directory=static_path), name="static")
+
 #Pyynnön rakenne
 class ChatRequest(BaseModel):
     message: str
@@ -24,8 +30,8 @@ async def ask_ai(request: ChatRequest):
         model="llama-3.1-8b-instant",
         messages=[
             #Järjestelmän "ohjeet / promptit"
-            {"role": "system", "content": "Olet hyödyllinen ja suora tekoäly-assistentti. Vastaat suomeksi ja pidät"
-                                          "vastauset lyhyinä, ytimekkäinä ja selkeinä"},
+            {"role": "system", "content": "You are a helpful and direct AI assistant. You answer in English and keep"
+                                          "your answers short, concise and clear."},
             {"role": "user", "content": request.message}
             #Tähän myöhemmin assistant, joka muistaa aikaisemman keskustelun, nyt ei ole ns muistia
         ]
