@@ -3,11 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>AI demo</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 </head>
 <body>
-    <input type="text" id="userInput" placeholder="Kysy jotain...">
-    <button onClick="sendToAI()">Lähetä</button>
-    <p id="response"></p>
+    <h1>AI Demo</h1>
+    <p id="response" class="response"></p>
+    <div class="input-wrapper">
+        <textarea class="input" id="userInput" placeholder="Kysy jotain..." rows="1"></textarea>
+        <button class="btn" onClick="sendToAI()">
+            <span class="material-symbols-outlined">arrow_upward</span>
+        </button>
+    </div>
 
     <script>
         async function sendToAI() {
@@ -24,6 +31,14 @@
             const data = await response.json();
             resField.innerText = data.answer;
         }
+
+        const tx = document.getElementById("userInput");
+
+        tx.addEventListener("input", function() {
+            this.style.height = "auto";
+            // Lisätään +2px, jotta vältetään pieni pomppiminen selaimissa
+            this.style.height = (this.scrollHeight) + "px";
+        });
     </script>
 
 </body>
