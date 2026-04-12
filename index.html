@@ -11,7 +11,7 @@
     <p id="response" class="response"></p>
     <div class="input-wrapper">
         <textarea class="input" id="userInput" placeholder="Ask something..." rows="1"></textarea>
-        <button class="btn" onClick="sendToAI()">
+        <button class="btn" onclick=sendToAI()>
             <span class="material-symbols-outlined">arrow_upward</span>
         </button>
     </div>
@@ -20,6 +20,13 @@
         async function sendToAI() {
             const message = document.getElementById("userInput").value;
             const resField = document.getElementById("response");
+
+            const inputField = document.getElementById("userInput");
+
+            if (!message.trim()) return;
+
+            inputField.value = "";
+            inputField.style.height = "auto";
 
             resField.innerHTML = '<span class="loader"></span>';
             const response = await fetch("/ask", {
@@ -44,13 +51,10 @@
         userInput.addEventListener("keydown", function(event) {
             if (event.key === "Enter" && !event.shiftKey) {
                 event.preventDefault();
-
                 sendToAI();
                 }
             }
         )
-
     </script>
-
 </body>
 </html>

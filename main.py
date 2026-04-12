@@ -25,20 +25,26 @@ app.mount("/static", StaticFiles(directory=static_path), name="static")
 class ChatRequest(BaseModel):
     message: str
 
+chat_history = [
+    {"role": "system", "content": "You are a helpful and direct AI assistant. You answer in English and keep"
+                                          "your answers short, concise and clear."}
+]
+
 @app.post("/ask")
 async def ask_ai(request: ChatRequest):
+
+    chat_history.append({"role": "user", "content": request.message})
+
     response = client.chat.completions.create(
         model="llama-3.1-8b-instant",
-        messages=[
-            #Järjestelmän "ohjeet / promptit"
-            {"role": "system", "content": "You are a helpful and direct AI assistant. You answer in English and keep"
-                                          "your answers short, concise and clear."},
-            {"role": "user", "content": request.message}
-            #Tähän myöhemmin assistant, joka muistaa aikaisemman keskustelun, nyt ei ole ns muistia
-        ]
+        messages=chat_history
     )
 
-    return {"answer": response.choices[0].message.content}
+    ai_answer = response.choices[0].message.content
+
+    chat_history.append({"role": "assistant", "content": ai_answer})
+
+    return {"answer": ai_answer}
 
 #Home page
 @app.get("/")
