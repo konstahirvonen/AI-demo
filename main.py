@@ -1,5 +1,6 @@
 import os
 from fastapi import FastAPI
+from fastapi import Response
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -43,3 +44,7 @@ async def ask_ai(request: ChatRequest):
 @app.get("/")
 async def get_frontend():
     return FileResponse("index.html")
+
+@app.get("/favicon.ico", include_in_schema=False)
+async def favicon():
+    return Response(content="", media_type="image/x-icon")

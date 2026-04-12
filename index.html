@@ -21,7 +21,7 @@
             const message = document.getElementById("userInput").value;
             const resField = document.getElementById("response");
 
-            resField.innerText = "Thinking...";
+            resField.innerHTML = '<span class="loader"></span>';
             const response = await fetch("/ask", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
