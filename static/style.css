@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500&display=swap');
+
 body {
     margin: 0;
     font-family: 'Outfit', sans-serif;
@@ -39,7 +41,7 @@ h1 {
     max-width: 80%;
     padding: 10px 16px;
     border-radius: 18px;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 1.5;
 }
 
@@ -81,11 +83,13 @@ h1 {
     height: 50px;
     max-height: 50px;
     min-height: 50px;
-    font-size: 18px;
+    -webkit-text-size-adjust: 100%;
+    font-size: 20px !important;
     color: white;
     font-family: inherit;
     resize: none;
     overflow-y: auto;
+    line-height: 1.5;
 }
 
 .btn {
