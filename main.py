@@ -54,3 +54,12 @@ async def get_frontend():
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
     return Response(content="", media_type="image/x-icon")
+
+@app.get("/history")
+async def get_history():
+    return {
+        "history": [
+            msg for msg in chat_history
+            if msg["role"] != "system"
+        ]
+    }

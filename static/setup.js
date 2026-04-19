@@ -1,15 +1,19 @@
 async function sendToAI() {
-        const message = document.getElementById("userInput").value;
-        const resField = document.getElementById("response");
-
         const inputField = document.getElementById("userInput");
+        const message = inputField.value;
 
         if (!message.trim()) return;
 
         inputField.value = "";
         inputField.style.height = "auto";
 
-        resField.innerHTML = '<span class="loader"></span>';
+        appendMessage("user", message)
+
+        const loader = document.createElement("div");
+        loader.id = "loader";
+        loader.innerHTML = '<span class="loader"></span>';
+        document.getElementById("chatHistory").appendChild(loader);
+
         const response = await fetch("/ask", {
             method: "POST",
             headers: {"Content-Type": "application/json"},
@@ -17,15 +21,11 @@ async function sendToAI() {
         });
 
         const data = await response.json();
-        resField.innerText = data.answer;
+        
+        loader.remove();
+        appendMessage("assistant", data.answer);
     }
 
-    const tx = document.getElementById("userInput");
-
-    tx.addEventListener("input", function() {
-        this.style.height = "auto";
-        this.style.height = (this.scrollHeight) + "px";
-    });
 
     const userInput = document.getElementById("userInput");
 
@@ -36,3 +36,12 @@ async function sendToAI() {
             }
         }
     )
+
+function appendMessage(role, content) {
+    const historyEl = document.getElementById("chatHistory");
+    const div = document.createElement("div");
+    div.className = `message ${role}`;
+    div.innerHTML = `<strong style="font-weight: bold;">${role === "user" ? "You" : "AI"}:</strong> <span>${content}</span>`;
+    historyEl.appendChild(div);
+    historyEl.scrollTop = historyEl.scrollHeight;
+}
